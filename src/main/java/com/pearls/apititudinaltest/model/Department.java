@@ -8,14 +8,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.pearls.apititudinaltest.dto.DepartmentDTO;
 
 import org.springframework.beans.BeanUtils;
 
 @Entity
 @Table(name = "departments")
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Department extends Model<DepartmentDTO> {
 
     @Id
