@@ -17,7 +17,7 @@ public class CountryService {
     private CountryRepository countryRepository;
 
     public List<CountryDTO> getCountries() {
-        List<Country> entities = countryRepository.findAllByOrderByName();
+        List<Country> entities = countryRepository.findByOrderByName();
         return entities.stream().map(Country::getDTO).collect(Collectors.toList());
     }
 

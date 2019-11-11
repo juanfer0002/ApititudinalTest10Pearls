@@ -1,8 +1,6 @@
 
 package com.pearls.apititudinaltest.config;
 
-import com.pearls.apititudinaltest.common.exceptions.NotAuthorizedException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -20,12 +18,6 @@ public class RestControllerExceptionHandler {
     public ResponseEntity<String> processException(Exception ex) {
         logger.error(ex.getMessage(), ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("AN INTERNAL ERROR HAS OCCURRED");
-    }
-
-    @ExceptionHandler(NotAuthorizedException.class)
-    public ResponseEntity<String> processNotAuthorizedException(NotAuthorizedException ex) {
-        logger.error(ex.getMessage(), ex);
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("NOT AUTHORIZED");
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)

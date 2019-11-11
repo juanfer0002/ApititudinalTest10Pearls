@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CityRepository extends CrudRepository<City, Integer> {
 
-    List<City> findCitiesByDepartmentIdOrderByName(int departmentId);
+    List<City> findByDepartmentIdOrderByName(int departmentId);
 
 }

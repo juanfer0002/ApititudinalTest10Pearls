@@ -17,7 +17,7 @@ public class DepartmentService {
     private DepartmentRepository departmentRepository;
 
     public List<DepartmentDTO> getDepartmentsByCountryId(int countryId) {
-        List<Department> entities = departmentRepository.findCitiesByCountryIdOrderByName(countryId);
+        List<Department> entities = departmentRepository.findByCountryIdOrderByName(countryId);
         return entities.stream().map(Department::getDTO).collect(Collectors.toList());
     }
 

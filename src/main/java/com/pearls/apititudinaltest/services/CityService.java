@@ -17,7 +17,7 @@ public class CityService {
     private CityRepository cityRepository;
 
     public List<CityDTO> getCitiesByDepartmentId(int departmentId) {
-        List<City> entities = cityRepository.findCitiesByDepartmentIdOrderByName(departmentId);
+        List<City> entities = cityRepository.findByDepartmentIdOrderByName(departmentId);
         return entities.stream().map(City::getDTO).collect(Collectors.toList());
     }
 
