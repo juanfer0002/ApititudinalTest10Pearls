@@ -28,7 +28,7 @@ public class ClientController {
         return clientService.getAll();
     }
 
-    @GetMapping
+    @GetMapping("/{id}")
     public ClientDTO getById(@PathVariable int id) {
         return clientService.getById(id);
     }

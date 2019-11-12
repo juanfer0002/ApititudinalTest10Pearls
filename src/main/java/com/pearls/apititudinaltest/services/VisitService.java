@@ -1,5 +1,6 @@
 package com.pearls.apititudinaltest.services;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -25,10 +26,13 @@ public class VisitService {
 
     @Transactional
     public VisitDTO save(VisitDTO dto) {
-        this.validateVisitToSave(dto);
+        Client client = this.validateVisitToSaveAndGetClient(dto);
 
         Visit entity = new Visit(dto);
         visitRepository.save(entity);
+
+        BigDecimal sum = entity.getTotal();
+        this.updateAssignedCredit(client, sum);
 
         return entity.getDTO();
     }
@@ -37,11 +41,14 @@ public class VisitService {
     public void delete(int id) {
         Optional<Visit> optEntity = visitRepository.findById(id);
         if (optEntity.isPresent()) {
-            visitRepository.delete(optEntity.get());
+            Visit entity = optEntity.get();
+            BigDecimal substract = entity.getTotal().multiply(new BigDecimal("-1"));
+            this.updateAssignedCredit(entity.getClient(), substract);
+            visitRepository.delete(entity);
         }
     }
 
-    private void validateVisitToSave(VisitDTO dto) {
+    private Client validateVisitToSaveAndGetClient(VisitDTO dto) {
         Optional<Client> optClient = clientRepository.findById(dto.getClientDTO().getId());
         if (!optClient.isPresent()) {
             throw new CustomValidationException("Client doesn't exist.");
@@ -56,6 +63,21 @@ public class VisitService {
             }
         }
 
+        return optClient.get();
+    }
+
+    private void updateAssignedCredit(Client client, BigDecimal valueToOperate) {
+        BigDecimal assignedCredit = client.getAssignedCredit();
+        assignedCredit = assignedCredit == null ? BigDecimal.ZERO : assignedCredit;
+
+        BigDecimal newValue = assignedCredit.add(valueToOperate);
+        if (newValue.compareTo(client.getMaximumAmount()) > 0) {
+            String msg = "Visit cannot be saved. Available credit is inferior than: " + valueToOperate;
+            throw new CustomValidationException(msg);
+        }
+
+        client.setAssignedCredit(newValue);
+        clientRepository.save(client);
     }
 
 }
