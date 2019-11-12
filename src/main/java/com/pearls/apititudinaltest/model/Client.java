@@ -10,8 +10,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
+import com.pearls.apititudinaltest.common.Utils;
 import com.pearls.apititudinaltest.dto.ClientDTO;
 
 import org.springframework.beans.BeanUtils;
@@ -134,6 +137,7 @@ public class Client extends Model<ClientDTO> {
         ClientDTO dto = new ClientDTO();
         BeanUtils.copyProperties(this, dto);
 
+        dto.setNit(Utils.decrypt(this.getNit()));
         dto.setCityDTO(this.getCity().getDTO());
 
         return dto;

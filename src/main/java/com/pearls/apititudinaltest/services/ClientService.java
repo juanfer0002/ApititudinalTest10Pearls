@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import com.pearls.apititudinaltest.common.Utils;
 import com.pearls.apititudinaltest.dto.ClientDTO;
 import com.pearls.apititudinaltest.dto.VisitDTO;
 import com.pearls.apititudinaltest.model.Client;
@@ -46,6 +47,7 @@ public class ClientService {
         BigDecimal assignedCredit = this.getCurrentAssignedCredit(dto.getId());
 
         Client entity = new Client(dto);
+        entity.setNit(Utils.encrypt(dto.getNit()));
         clientRepository.save(entity);
         entity.setAssignedCredit(assignedCredit);
 
