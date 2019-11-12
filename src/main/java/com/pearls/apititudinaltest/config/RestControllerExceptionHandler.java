@@ -1,6 +1,8 @@
 
 package com.pearls.apititudinaltest.config;
 
+import com.pearls.apititudinaltest.common.exceptions.CustomValidationException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -24,6 +26,12 @@ public class RestControllerExceptionHandler {
     public ResponseEntity<String> processNotAuthorizedException(HttpRequestMethodNotSupportedException ex) {
         logger.error(ex.getMessage(), ex);
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("METHOD NOT SUPPORTED");
+    }
+
+    @ExceptionHandler(CustomValidationException.class)
+    public ResponseEntity<String> processNotAuthorizedException(CustomValidationException ex) {
+        logger.error(ex.getMessage(), ex);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getUserMsg());
     }
 
 }

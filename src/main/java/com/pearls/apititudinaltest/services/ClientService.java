@@ -8,8 +8,11 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import com.pearls.apititudinaltest.dto.ClientDTO;
+import com.pearls.apititudinaltest.dto.VisitDTO;
 import com.pearls.apititudinaltest.model.Client;
+import com.pearls.apititudinaltest.model.Visit;
 import com.pearls.apititudinaltest.repositories.ClientRepository;
+import com.pearls.apititudinaltest.repositories.VisitRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,9 +23,22 @@ public class ClientService {
     @Autowired
     private ClientRepository clientRepository;
 
+    @Autowired
+    private VisitRepository visitRepository;
+
     public List<ClientDTO> getAll() {
         List<Client> entities = clientRepository.findByOrderByName();
         return entities.stream().map(Client::getDTO).collect(Collectors.toList());
+    }
+
+    public ClientDTO getById(int id) {
+        Optional<Client> optEntity = clientRepository.findById(id);
+        return optEntity.isPresent() ? optEntity.get().getDTO() : null;
+    }
+
+    public List<VisitDTO> getClientVisitsById(int id) {
+        List<Visit> entities = visitRepository.findByClientIdOrderByDateDesc(id);
+        return entities.stream().map(Visit::getDTO).collect(Collectors.toList());
     }
 
     @Transactional
@@ -40,6 +56,7 @@ public class ClientService {
     public void delete(int id) {
         Optional<Client> optEntity = clientRepository.findById(id);
         if (optEntity.isPresent()) {
+            visitRepository.deleteByClientId(id);
             clientRepository.delete(optEntity.get());
         }
     }
