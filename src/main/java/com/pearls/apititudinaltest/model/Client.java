@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -20,6 +22,7 @@ public class Client extends Model<ClientDTO> {
 
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -43,6 +46,9 @@ public class Client extends Model<ClientDTO> {
 
     @Column(name = "assigned_credit")
     private BigDecimal assignedCredit;
+
+    @Column(name = "visits_percenage")
+    private BigDecimal visitsPercenage;
 
     public Client() {
     }
@@ -113,6 +119,14 @@ public class Client extends Model<ClientDTO> {
 
     public void setAssignedCredit(BigDecimal assignedCredit) {
         this.assignedCredit = assignedCredit;
+    }
+
+    public BigDecimal getVisitsPercenage() {
+        return visitsPercenage;
+    }
+
+    public void setVisitsPercenage(BigDecimal visitsPercenage) {
+        this.visitsPercenage = visitsPercenage;
     }
 
     @Override

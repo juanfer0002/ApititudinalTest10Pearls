@@ -15,9 +15,24 @@ CREATE TABLE departments (
 
 
 CREATE TABLE cities (
-    id integer,
+    id int,
     name varchar(200),
     department_id int,
-    constraint [pk_countries]  primary key (id),
-    constraint [pk_countries]  foreign key (department_id) references departments(id)
+    constraint pk_countries primary key (id),
+    constraint fk_cities_departments  foreign key (department_id) references departments(id)
+);
+
+
+CREATE TABLE clients (
+    id integer auto_increment,
+    nit varchar(200),
+    name varchar(200),
+    address varchar(200),
+    phone varchar(200),
+    city_id int,
+    maximum_amount numeric,
+    assigned_credit numeric,
+    visits_percenage numeric,
+    constraint pk_clients primary key (id),
+    constraint fk_clients_cities foreign key (city_id) references cities(id)
 );

@@ -12,6 +12,7 @@ public class ClientDTO extends DTO {
     private String phone;
     private BigDecimal maximumAmount;
     private BigDecimal assignedCredit;
+    private BigDecimal visitsPercenage;
 
     public int getId() {
         return id;
@@ -75,6 +76,14 @@ public class ClientDTO extends DTO {
 
     public void setAssignedCredit(BigDecimal assignedCredit) {
         this.assignedCredit = assignedCredit;
+    }
+
+    public BigDecimal getVisitsPercenage() {
+        return visitsPercenage;
+    }
+
+    public void setVisitsPercenage(BigDecimal visitsPercenage) {
+        this.visitsPercenage = visitsPercenage;
     }
 
 }
